@@ -27,12 +27,16 @@ import random
 
 gameActive = True
 playerName = 0
-playerSelection = 0
-cpuSelection = 0
+playerSelection = None
 roundActive = True
 answer = 0
 numberOfWins = 0
 
+from enum import Enum
+class Selection(Enum):
+    Rock = 1
+    Paper = 2
+    Scissors = 3
 
 while gameActive:
     while roundActive:  
@@ -40,51 +44,51 @@ while gameActive:
             playerName = input("Hello!  Please enter your name:  ")
             print("Hello", playerName + "!") #the + eliminates the blank space between the variable value and the !
         
-        if playerSelection == 0:
+        if playerSelection == None:
             playerSelection = input("Please choose rock, paper, or scissors:  ")
             print(playerName, "chose", playerSelection + ".")
-#do some kind of animation or stall here
-#       if cpuSelection == 0:
-        cpuSelection = random.randint(1,4)
+# TODO do some kind of animation or stall here
 
-        if cpuSelection == 1:
+        cpuSelection = Selection(random.randint(1,4))
+
+        if cpuSelection == Selection.Rock:
             print("CPU chose rock.")
-        elif cpuSelection == 2:
+        elif cpuSelection == Selection.Paper:
             print("CPU chose paper.")
-        elif cpuSelection == 3:
+        elif cpuSelection == Selection.Scissors:
             print("CPU chose scissors.")
 
         if playerSelection == "rock":
-            if cpuSelection == 1:
+            if cpuSelection == Selection.Rock:
                 print("Draw!")
                 roundActive = False
-            elif cpuSelection == 2:
+            elif cpuSelection == Selection.Paper:
                 print("You lost!")
                 roundActive = False
-            elif cpuSelection == 3:
+            elif cpuSelection == Selection.Scissors:
                 print("You won!")
                 numberOfWins = numberOfWins + 1
                 roundActive = False
         elif playerSelection == "paper":
-            if cpuSelection == 1:
+            if cpuSelection == Selection.Rock:
                 print("You won!")
                 numberOfWins = numberOfWins + 1
                 roundActive = False
-            elif cpuSelection == 2:
+            elif cpuSelection == Selection.Paper:
                 print("Draw!")
                 roundActive = False
-            elif cpuSelection == 3:
+            elif cpuSelection == Selection.Scissors:
                 print("You lost!")
                 roundActive = False
         elif playerSelection == "scissors":
-            if cpuSelection == 1:
+            if cpuSelection == Selection.Rock:
                 print("You lost!")
                 roundActive = False
-            elif cpuSelection == 2:
+            elif cpuSelection == Selection.Paper:
                 print("You won!")
                 numberOfWins = numberOfWins + 1
                 roundActive = False
-            elif cpuSelection == 3:
+            elif cpuSelection == Selection.Scissors:
                 print("Draw!")
                 roundActive = False
         
@@ -96,8 +100,7 @@ while gameActive:
 
     answer = input("Do you want to play again? (y/n):  ")
     if answer == "y":
-        playerSelection = 0
-        cpuSelection = 0
+        playerSelection = None
         roundActive = True
     elif answer == "n":
         gameActive = False
