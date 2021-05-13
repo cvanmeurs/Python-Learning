@@ -25,12 +25,6 @@ The game works like this:
 
 import random
 
-gameActive = True
-playerName = 0
-roundActive = True
-answer = 0
-numberOfWins = 0
-
 from enum import Enum
 class Selection(Enum):
     Rock = 1
@@ -54,70 +48,76 @@ def getPlayerSelection():
             print(selection, "is not a valid selection. Please try again.")
     return stringToSelection[selection]
 
+validPlayAgainAnswers = ["y", "n"]
+def getPlayAgain():
+    answerIsValid = False;
+    while not answerIsValid:
+        answer = input("Do you want to play again? (y/n):  ")
+        answerIsValid = answer in validPlayAgainAnswers
+        if not answerIsValid:
+            print(answer, "is not a valid selection. Please choose y or n.")
+    return answer
+
+
+
+class RoundResult(Enum):
+    Draw = 1
+    Win = 2
+    Loss = 3
+
+def scoreRound(player, cpu):
+    if player == cpu:
+        return RoundResult.Draw
+
+    if player == Selection.Rock:
+        if cpu == Selection.Paper:
+            return RoundResult.Loss
+        else:
+            return RoundResult.Win
+    
+    if player == Selection.Paper:
+        if cpu == Selection.Scissors:
+            return RoundResult.Loss
+        else:
+            return RoundResult.Win
+
+    if player == Selection.Scissors:
+        if cpu == Selection.Rock:
+            return RoundResult.Loss
+        else:
+            return RoundResult.Win
+
+def printRoundInfo(name, playerHand, cpuHand, roundResult, winCount):
+    print(name, "chose", playerHand.name.lower() + ".")
+    print("CPU chose", cpuHand.name.lower() + ".")
+    if roundResult == RoundResult.Draw:
+        print ("Draw!")
+    elif roundResult == RoundResult.Win:
+        print ("Win!")
+    elif roundResult == RoundResult.Loss:
+        print("Loss!")
+    if winCount == 1:
+        print("You have won 1 time!")
+    elif winCount >> 1:
+        print("You have won", winCount, "times!")
+
+gameActive = True
+numberOfWins = 0
+playerName = input("Hello!  Please enter your name:  ")
+print("Hello", playerName + "!") #the + eliminates the blank space between the variable value and the !
+
 while gameActive:
-    while roundActive:  
-        print("Beginning of round")
+    # TODO do some kind of animation or stall here
+    playerSelection = getPlayerSelection()
+    cpuSelection = Selection(random.randint(1,3))
+    result = scoreRound(playerSelection, cpuSelection)
+    if (result == RoundResult.Win):
+        numberOfWins = numberOfWins + 1
 
-        if playerName == 0:
-            playerName = input("Hello!  Please enter your name:  ")
-            print("Hello", playerName + "!") #the + eliminates the blank space between the variable value and the !
-        
-# TODO do some kind of animation or stall here
+    printRoundInfo(playerName, playerSelection, cpuSelection, result, numberOfWins)
 
-        playerSelection = getPlayerSelection()
-        cpuSelection = Selection(random.randint(1,3))
-
-        if cpuSelection == Selection.Rock:
-            print("CPU chose rock.")
-        elif cpuSelection == Selection.Paper:
-            print("CPU chose paper.")
-        elif cpuSelection == Selection.Scissors:
-            print("CPU chose scissors.")
-
-        if playerSelection == Selection.Rock:
-            if cpuSelection == Selection.Rock:
-                print("Draw!")
-                roundActive = False
-            elif cpuSelection == Selection.Paper:
-                print("You lost!")
-                roundActive = False
-            elif cpuSelection == Selection.Scissors:
-                print("You won!")
-                numberOfWins = numberOfWins + 1
-                roundActive = False
-        elif playerSelection == Selection.Paper:
-            if cpuSelection == Selection.Rock:
-                print("You won!")
-                numberOfWins = numberOfWins + 1
-                roundActive = False
-            elif cpuSelection == Selection.Paper:
-                print("Draw!")
-                roundActive = False
-            elif cpuSelection == Selection.Scissors:
-                print("You lost!")
-                roundActive = False
-        elif playerSelection == Selection.Scissors:
-            if cpuSelection == Selection.Rock:
-                print("You lost!")
-                roundActive = False
-            elif cpuSelection == Selection.Paper:
-                print("You won!")
-                numberOfWins = numberOfWins + 1
-                roundActive = False
-            elif cpuSelection == Selection.Scissors:
-                print("Draw!")
-                roundActive = False
-        
-
-        if numberOfWins == 1:
-            print("You have won 1 time!")
-        elif numberOfWins >> 1:
-            print("You have won", numberOfWins, "times!")
-
-    answer = input("Do you want to play again? (y/n):  ")
-    if answer == "y":
-        roundActive = True
-    elif answer == "n":
+    answer = getPlayAgain()
+    if answer == "n":
         gameActive = False
 
 
