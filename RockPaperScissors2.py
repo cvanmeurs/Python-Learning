@@ -27,7 +27,6 @@ import random
 
 gameActive = True
 playerName = 0
-playerSelection = None
 roundActive = True
 answer = 0
 numberOfWins = 0
@@ -38,18 +37,35 @@ class Selection(Enum):
     Paper = 2
     Scissors = 3
 
+validPlayerSelections = ["rock", "paper", "scissors"]
+
+# TODO: I don't love this name. It's pretty awkward. Should we call "selections" "hands"?
+stringToSelection = { "rock" : Selection.Rock,
+                      "paper" : Selection.Paper,
+                      "scissors" : Selection.Scissors }
+
+def getPlayerSelection():
+    print("Please choose rock, paper, or scissors.")
+    playerSelectionIsValid = False
+    while not playerSelectionIsValid:
+        selection = input("Your selection:  ")
+        playerSelectionIsValid = selection in validPlayerSelections
+        if not playerSelectionIsValid:
+            print(selection, "is not a valid selection. Please try again.")
+    return stringToSelection[selection]
+
 while gameActive:
     while roundActive:  
+        print("Beginning of round")
+
         if playerName == 0:
             playerName = input("Hello!  Please enter your name:  ")
             print("Hello", playerName + "!") #the + eliminates the blank space between the variable value and the !
         
-        if playerSelection == None:
-            playerSelection = input("Please choose rock, paper, or scissors:  ")
-            print(playerName, "chose", playerSelection + ".")
 # TODO do some kind of animation or stall here
 
-        cpuSelection = Selection(random.randint(1,4))
+        playerSelection = getPlayerSelection()
+        cpuSelection = Selection(random.randint(1,3))
 
         if cpuSelection == Selection.Rock:
             print("CPU chose rock.")
@@ -58,7 +74,7 @@ while gameActive:
         elif cpuSelection == Selection.Scissors:
             print("CPU chose scissors.")
 
-        if playerSelection == "rock":
+        if playerSelection == Selection.Rock:
             if cpuSelection == Selection.Rock:
                 print("Draw!")
                 roundActive = False
@@ -69,7 +85,7 @@ while gameActive:
                 print("You won!")
                 numberOfWins = numberOfWins + 1
                 roundActive = False
-        elif playerSelection == "paper":
+        elif playerSelection == Selection.Paper:
             if cpuSelection == Selection.Rock:
                 print("You won!")
                 numberOfWins = numberOfWins + 1
@@ -80,7 +96,7 @@ while gameActive:
             elif cpuSelection == Selection.Scissors:
                 print("You lost!")
                 roundActive = False
-        elif playerSelection == "scissors":
+        elif playerSelection == Selection.Scissors:
             if cpuSelection == Selection.Rock:
                 print("You lost!")
                 roundActive = False
@@ -100,7 +116,6 @@ while gameActive:
 
     answer = input("Do you want to play again? (y/n):  ")
     if answer == "y":
-        playerSelection = None
         roundActive = True
     elif answer == "n":
         gameActive = False
