@@ -1,12 +1,26 @@
-#Rock Paper Scissors
-
 """
-Greet the user X
-Ask the user to choose rock, paper, or scissors X
-Do a little compute animation?
-Show the results
-Display win or lose
-Ask the user if they'd like to play again
+Rock Paper Scissors 2
+
+Our goal is to explore some options we have for breaking our initial
+Rock Paper Scissors program into smaller chunks.
+
+The game works like this:
+- Initialize any game state we will need to keep track of.
+- Enter the "main loop" of the game.
+-   Greet the user.
+-   If they have not set their name, ask for their name.
+-   Enter the "rock paper scissors" loop
+-     Play a round of rock, paper, scissors.
+-       Get user selection
+-       Decide a random CPU selection
+-       Score the round
+-       Tell the user the result.
+-       Keep track of wins and losses.
+-     Ask the user to play again.
+-   When the player is done playing,
+-     exit the "rock paper scissors" loop,
+-     tell them the score, and
+-     say goodbye.
 """
 
 import random
