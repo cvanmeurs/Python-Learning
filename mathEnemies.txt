@@ -1,0 +1,11 @@
+# enemyName/enemyHealth/enemyAttack/enemyAttackChance/enemyXP
+
+SLIME 5 1 40 3
+BAT 6 2 45 4
+RAT 10 2 50 5
+SNAKE 12 3 65 7
+SKELETON 10 3 50 8
+GOBLIN 15 4 50 10
+TROLL 12 3 40 14
+GOLEM 17 5 30 20
+DRAGON 25 7 40 35
